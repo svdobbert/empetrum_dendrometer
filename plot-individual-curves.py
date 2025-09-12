@@ -1,7 +1,11 @@
 import dash
 from dash import dcc, html
+import numpy as np
 import plotly.express as px
 import pandas as pd
+import plotly.graph_objects as go
+from scipy.interpolate import UnivariateSpline
+from datetime import datetime
 
 exec(open('constants/palettes.py').read())
 
@@ -38,6 +42,7 @@ textcolor = palette1[1]
 shrinkingcolor = palette1[2]
 growthcolor = palette1[4]
 linecolor = palette1[1]
+smoothcolor = palette1[6]
 
 
 app = dash.Dash(__name__)
@@ -78,11 +83,43 @@ def update_figure(selected_id, date_col="date", value_col="D_mean"):
         markers=False          
     )
     
+    dff_fit = dff[[date_col, value_col]].dropna().copy()
+    if dff_fit.shape[0] < 4:
+        return fig
+
+    dff_fit[date_col] = pd.to_datetime(dff_fit[date_col])
+    dff_fit = dff_fit.sort_values(date_col)
+
+    dates = dff_fit[date_col]
+    x = (dates - dates.min()).dt.total_seconds() / 86400.0  
+    y = dff_fit[value_col].astype(float).values
+
+    var_y = np.var(y) if np.var(y) > 0 else 0.0
+    s_default = max(0.0, len(x) * var_y * 0.01)   
+    spline = UnivariateSpline(x, y, s=s_default)
+
+    x_smooth = np.linspace(x.min(), x.max(), 500)
+    y_smooth = spline(x_smooth)
+
+    x_smooth_dt = dates.min() + pd.to_timedelta(x_smooth, unit="D")
+    x_smooth_dt = pd.to_datetime(x_smooth_dt) 
+
+    fig.add_trace(
+        go.Scatter(
+            x=x_smooth_dt,
+            y=y_smooth,
+            mode="lines",
+            name="Spline fit",
+            line=dict(color=smoothcolor, width=3, dash="dash"),
+            hoverinfo="skip"   
+        )
+    )
+    
     fig.update_layout(
         height=800,
         width=1800,
-        plot_bgcolor=bgcolor,    # inside axes
-        paper_bgcolor=bgcolor,   # outside axes
+        plot_bgcolor=bgcolor,   
+        paper_bgcolor=bgcolor,  
         font_color=textcolor,    
         title_font_size=20,
         template="plotly_white"
