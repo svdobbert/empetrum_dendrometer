@@ -20,9 +20,26 @@ def trend_slope(group):
     slope = linregress(group.index, group["D_mean"]).slope
     return "shrinking" if slope < 0 else "growth"
 
-trend_series = df.groupby(["id", "year"]).apply(trend_slope)
+def remove_initial(series):
+    if series.notna().any():
+        print('NotNA')
+        return series - series.dropna().iloc[0]
+    else:
+        return pd.Series([float('nan')] * len(series), index=series.index)
+
+trend_series = df.groupby(["id", "year"]).apply(get_trend)
 trend_series.name = "trend"
 
 df = df.merge(trend_series, on=["id", "year"])
+
+df["normalized"] = df.groupby("id")["D_mean"].transform(remove_initial)
+
 print(df.head())
+print(df["normalized"].describe())
+
+for name, group in df.groupby("id"):
+    print(name)
+    print(group["normalized"])
+    break
+
 df.to_csv("input/daily_data_with_trends.csv", index=False)
