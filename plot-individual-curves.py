@@ -110,7 +110,8 @@ def update_figure(selected_id, date_col="date", value_col="D_mean"):
             y=y_smooth,
             mode="lines",
             name="Spline fit",
-            line=dict(color=smoothcolor, width=3, dash="dash"),
+            opacity=0.5,     
+            line=dict(color=smoothcolor, width=12),
             hoverinfo="skip"   
         )
     )
