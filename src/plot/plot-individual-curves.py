@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 from scipy.interpolate import UnivariateSpline
 from datetime import datetime
 
-exec(open('constants/palettes.py').read())
+exec(open('src/constants/palettes.py').read())
 
 
 def plot_id_line(df, id_value, date_col="date", value_col="D_mean"):

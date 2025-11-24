@@ -1,4 +1,4 @@
-# Dendrometrum Empetrum hermaphroditum
+# Dendrometer Empetrum hermaphroditum
 
 ### Various analysis for dendrometer measurements from Empetrum hermaphroditum specimens
 

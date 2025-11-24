@@ -2,8 +2,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 
-exec(open('trend.py').read())
-exec(open('constants/palettes.py').read())
+exec(open('src/constants/trend.py').read())
+exec(open('stc/constants/palettes.py').read())
 
 df = pd.read_csv("input/data_with_trends.csv")
 df["date"] = pd.to_datetime(df["datetime"])
