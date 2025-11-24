@@ -3,7 +3,7 @@ import numpy as np
 from scipy.stats import pearsonr
 import plotly.express as px
 
-exec(open('constants/palettes.py').read())
+exec(open('src/constants/palettes.py').read())
 
 df = pd.read_csv("input/shrinking-metrics.csv")
 

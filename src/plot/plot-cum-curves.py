@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 from scipy.interpolate import UnivariateSpline
 from datetime import datetime
 
-exec(open('constants/palettes.py').read())
+exec(open('src/constants/palettes.py').read())
 
 df = pd.read_csv("input/daily_data_with_trends.csv")
 df["date"] = pd.to_datetime(df["date"])

@@ -1,7 +1,7 @@
 import pandas as pd
 from scipy.stats import linregress
 
-exec(open('constants/palettes.py').read())
+exec(open('src/constants/palettes.py').read())
 
 df = pd.read_csv("input/daily_data.csv")
 df["date"] = pd.to_datetime(df["date"])

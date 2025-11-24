@@ -2,7 +2,7 @@
 import pandas as pd
 import plotly.express as px
 
-exec(open('constants/palettes.py').read())
+exec(open('src/constants/palettes.py').read())
 
 def plot_shrinking_vs_growth(df, group_col=None, palette_shrinking=palette1[2], palette_growth=palette1[4]):
     """
