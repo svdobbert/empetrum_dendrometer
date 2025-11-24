@@ -48,6 +48,7 @@ fig = px.box(
     range_y=[-200, 365],
 )
 fig.show(renderer="browser")
+fig.write_html("output/shrinking-metrics-boxplot.html")
 
 # correlation matrix
 input = df[df["shrinking_year"] < -2].copy()
@@ -86,3 +87,4 @@ fig = px.imshow(
 )
 fig.update_layout(width=300, height=3000)
 fig.show(renderer="browser")
+fig.write_html("output/shrinking-corr-matrix.html")
