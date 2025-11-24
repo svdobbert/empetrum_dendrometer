@@ -10,8 +10,8 @@ This Repository contains various scripts to prepare, analyse and plot dendromete
 
 In a bash console run:
 
-`python -m venv venv`
-`source venv/bin/activate`  On Windows: `venv\Scripts\activate`
+`python -m venv .venv` or `python3 -m venv .venv` (depending in your version)
+`source .venv/bin/activate`  On Windows: `.venv\Scripts\activate`
 `pip install -r requirements.txt`
 
 # <span style="color:green"> **Credit** </span> 
