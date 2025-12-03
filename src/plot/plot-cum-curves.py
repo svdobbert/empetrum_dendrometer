@@ -10,6 +10,7 @@ from datetime import datetime
 exec(open('src/constants/palettes.py').read())
 
 df = pd.read_csv("input/daily_data_with_trends.csv")
+df_events = pd.read_csv("input/shrinking-events.csv")
 df["date"] = pd.to_datetime(df["date"])
 df = df.sort_values(["id", "date"])
 
@@ -101,6 +102,7 @@ def update_figure(selected_id, selected_year, date_col="date", value_col="D_base
         line_dash_sequence=["solid"],   
         markers=False          
     )   
+    
     fig.add_trace(go.Scatter(
         x=dff[date_col],
         y=dff[neg_col],
@@ -117,6 +119,38 @@ def update_figure(selected_id, selected_year, date_col="date", value_col="D_base
         line=dict(color=growthcolor, width=12, dash="dash"),
         hoverinfo="skip"
     ))
+    
+    if sel_year is None or sel_year == "All":
+        events = df_events[df_events['id'] == selected_id]
+    else:
+        events = df_events[(df_events['id'] == selected_id) & 
+                           (df_events['year'] == sel_year)]
+    
+    width_map = {
+    'inner': 4,
+    'outer': 6,
+    'nested_2': 3,
+    'nested_3': 2,
+    'nested_4': 1
+    }
+    
+    for _, event in events.iterrows():
+        fig.add_vrect(
+            x0=event['start'],
+            x1=event['recovery'],
+            fillcolor=shrinkingcolor,      
+            opacity=0.2,          
+            layer="below",        
+            line_width=0
+        )   
+        
+    # for _, event in events.iterrows():
+    #     fig.add_vline(
+    #         x=event['stop'],
+    #         line_width=width_map.get(event["event_type"], 1),
+    #         line_dash="dot",
+    #         line_color="black"
+    #     )
     
     fig.update_layout(
         height=800,

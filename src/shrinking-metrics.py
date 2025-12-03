@@ -13,7 +13,6 @@ df["month"] = df["date"].dt.month
 df["doy"] = df["date"].dt.dayofyear
 df["group"] = df["id"] + " " + df["year"].astype(str) + " " + df["week"].astype(str)
 df = df.dropna(subset=["D_mean"])
-print(df.head())
 
 df["change"] = df.groupby("id")["D_mean"].diff()
 weekly_total_change = df.groupby("group")["change"].sum().reset_index()
